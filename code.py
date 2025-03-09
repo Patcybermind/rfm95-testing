@@ -22,7 +22,7 @@ buffer = bytearray(1)
 
 
 spi.try_lock()
-spi.configure(baudrate=10_000)  # Set frequency to 5 MHz
+spi.configure(baudrate=1_000)  # Set frequency to 5 MHz
 cs.value = False
 time.sleep(0.01)
 rst.value = False
