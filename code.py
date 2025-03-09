@@ -29,11 +29,20 @@ LED.direction = digitalio.Direction.OUTPUT
 # Initialize SPI bus.
 spi = busio.SPI(board.GP18, MOSI=board.GP19, MISO=board.GP16) # first one is sck
 
-# Ensure the SPI bus is configured before use
-#while not spi.try_lock():
-#    pass
 
-spi.configure(baudrate=1000000)  # Set baudrate to 1 MHz
+# Wait for SPI to be ready
+while not spi.try_lock():
+    pass
+
+try:
+    # Set the baudrate (SPI clock speed)
+    spi.configure(baudrate=1000000)  # 1 MHz
+    print("SPI at 1mhz!")
+except all:
+    print("not at 1mhz")
+finally:
+    # Always unlock to prevent issues
+    spi.unlock()
 
 # Initialize RFM radio
 rfm9x = adafruit_rfm9x.RFM9x(spi, CS, RESET, RADIO_FREQ_MHZ)
